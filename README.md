@@ -4,4 +4,5 @@ Here are things that I would have done very quickly in awk or sed or perl or som
 
 ## csv2md
 
-csv2md is to convert CSV files to markdown tables. It has no options or customizations, and the hard work is done by the encoding/csv package. But I'm trying to just write little filters and I had a need for this.
+csv2md is to convert CSV files to markdown tables. It reads from stdin and writes to stdout. The hard work is done by the encoding/csv package. But I'm trying to just write little filters and I had a need for this.
+
