@@ -3,17 +3,41 @@ package main
 
 import (
 	"encoding/csv"
+	"flag"
 	"fmt"
 	"io"
 	"log"
 	"os"
 	"strings"
+	"unicode/utf8"
 )
 
 func main() {
-	in := os.Stdin
 
+	var NFields = flag.Int("fields", 0, "number of fields per record")
+	var seperator = flag.String("separator", "comma", "field separator (comma, tab, c")
+	var commentC = flag.String("comment", "", "comment character")
+	flag.Parse()
+
+	in := os.Stdin
 	r := csv.NewReader(in)
+	r.FieldsPerRecord = *NFields
+
+	var sep rune
+	switch *seperator {
+	case "tab":
+		sep = '\t'
+	case "comma", "":
+		sep = ','
+	default:
+		sep, _ = utf8.DecodeRuneInString(*seperator)
+	}
+	r.Comma = sep
+
+	r.Comment = 0
+	if *commentC != "" {
+		r.Comment, _ = utf8.DecodeRuneInString(*commentC)
+	}
 
 	headers, err := r.Read()
 	if err != nil {
